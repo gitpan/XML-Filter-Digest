@@ -7,36 +7,45 @@
 
 use strict;
 use XML::Filter::Digest;
+use XML::Driver::HTML;
 use XML::Handler::YAWriter;
 use IO::File;
 
 my $digest = new XML::Filter::Digest(
-	'Handler'=>
-	    new XML::Handler::YAWriter( 
-		'Output' => new IO::File( ">-" ),
-		'Pretty' => {
-		    'AddHiddenNewLine' => 1
-		    }
-		),
+    'Handler'=>
+	new XML::Handler::YAWriter( 
+	    'Output' => new IO::File( ">-" ),
+	    'Pretty' => {
+	        'PrettyWhiteNewline' => 1,
+	        'PrettyWhiteIndent' => 1,
+		'CatchEmptyElement' => 1
+		}
+	    ),
 
-	'Script' =>
-	    new XML::Script::Digest(
-		'Source' => { 'SystemId' => $ARGV[0] }
-		)->parse(),
+    'Script' =>
+	new XML::Script::Digest(
+	    'Source' => { 'SystemId' => $ARGV[0] }
+	    )->parse(),
+    );
 
-	'Source' => { 'SystemId' => $ARGV[1] }
-	)->parse();
+my $html = new XML::Driver::HTML(
+    'Handler' => $digest,
+    'Source' => {
+    	'SystemId' => $ARGV[1],
+	'Encoding' => 'Latin1'
+	}
+    )->parse();
 
 0;
 __END__
 
 =head1 NAME
 
-digest - command line interface to the Digest SAX Filter
+survey - command line interface to the Digest SAX Filter
 
 =head1 SYNOPSIS
 
-  digest scriptfile.xml some_original.xml > some_processed.xml
+  digest scriptfile.xml some_original.html > some_processed.xml
 
 =head1 DESCRIPTION
 

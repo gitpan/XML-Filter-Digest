@@ -20,7 +20,7 @@ use Digest::MD5;
 use Data::Dumper;
 
 %checksums = (
-	'REC-xpath.jumplist' => "fff4ecc14b2557fe6982891f1fa891b3",
+	'REC-xpath.jumplist' => "6402987c5eefaed51117f1067914914f",
 	);
 
 $loaded = 1;
@@ -34,7 +34,10 @@ print "ok 1\n";
 
 print "Script ... ";
 
-my $script = new XML::Script::Digest( 'Source' => { 'SystemId' => 'jumplist.xml' } )->parse();
+my $script = new XML::Script::Digest(
+    'Source' => {
+        'SystemId' => 'REC-xpath.digest'
+    } )->parse();
 
 print "ok 2\n";
 

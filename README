@@ -2,29 +2,29 @@ NAME
        XML::Filter::Digest
 
 SYNOPSIS
-	   use strict;
-	   use XML::Filter::Digest;
-	   use XML::Handler::YAWriter;
-	   use IO::File;
+           use strict;
+           use XML::Filter::Digest;
+           use XML::Handler::YAWriter;
+           use IO::File;
 
-	   my $digest = new XML::Filter::Digest(
-	       'Handler'=>
-		   new XML::Handler::YAWriter(
-		   'Output' => new IO::File( ">-" ),
-		   'Pretty' => {
-		       'AddHiddenNewLine' => 1
-		       }
-		   ),
+           my $digest = new XML::Filter::Digest(
+               'Handler'=>
+                   new XML::Handler::YAWriter(
+                   'Output' => new IO::File( ">-" ),
+                   'Pretty' => {
+                       'AddHiddenNewLine' => 1
+                       }
+                   ),
 
-	       'Script' =>
-		   new XML::Script::Digest(
-		   'Source' => { 'SystemId' => $ARGV[0] }
-		   )->parse(),
+               'Script' =>
+                   new XML::Script::Digest(
+                   'Source' => { 'SystemId' => $ARGV[0] }
+                   )->parse(),
 
-	       'Source' => { 'SystemId' => $ARGV[1] }
-	       )->parse();
+               'Source' => { 'SystemId' => $ARGV[1] }
+               )->parse();
 
-	   0;
+           0;
 
 
 DESCRIPTION
@@ -50,25 +50,25 @@ DESCRIPTION
        elements, which in turn contain the XPath string-value of
        their nodes as character data.
 
-	   <digest name="extract">
-	   <collect
-	       name="section"
-	       node="//html//h2[position()&gt;3]"
-	       >
-	       <collect
-		   name="id"
-	       node="child::a/attribute::name"
-	       />
-	       <collect
-		   name="title"
-	       node="."
-	       />
-	       <collect
-		   name="intro"
-	       node="following-sibling::p[position()=1]"
-	       />
-	   </collect>
-	   </digest>
+           <digest name="extract">
+           <collect
+               name="section"
+               node="//html//h2[position()&gt;3]"
+               >
+               <collect
+                   name="id"
+               node="child::a/attribute::name"
+               />
+               <collect
+                   name="title"
+               node="."
+               />
+               <collect
+                   name="intro"
+               node="following-sibling::p[position()=1]"
+               />
+           </collect>
+           </digest>
 
        The digest script parser silently ignores anything other
        than digest elements and collect elements. The digest
@@ -100,72 +100,74 @@ DESCRIPTION
        objects.
 
        new Creates a new XML::Driver::HTML object. Default
-	   options for parsing, described below, are passed as
-	   key-value pairs or as a single hash.	Options may be
-	   changed directly in the object.
+           options for parsing, described below, are passed as
+           key-value pairs or as a single hash.  Options may be
+           changed directly in the object.
 
        parse
-	   Parses a document by embedding XML::Parser::PerlSAX.
-	   This allows you to use XML::Filter::Digest directly as
-	   a Driver and simplifies generating a ready-to-use
-	   XML::Script::Object.
+           Parses a document by embedding XML::Parser::PerlSAX.
+           This allows you to use XML::Filter::Digest directly as
+           a Driver and simplifies generating a ready-to-use
+           XML::Script::Object.
 
-	   Options, described below, are passed as key-value
-	   pairs or as a single hash.  Options passed to parse()
-	   override the default options in the object for the
-	   duration of the parse.
+           Options, described below, are passed as key-value
+           pairs or as a single hash.  Options passed to parse()
+           override the default options in the object for the
+           duration of the parse.
+
+
 
        start_document
-	   Notifies the object about the start of a new document.
-	   The object will do its cleanup if it's reused.
+           Notifies the object about the start of a new document.
+           The object will do its cleanup if it's reused.
 
        end_document
-	   Notifies the object about the end of the document.
-	   Return value of XML::Script::Digest is $self, to be
-	   used as the return value of the parse method.
+           Notifies the object about the end of the document.
+           Return value of XML::Script::Digest is $self, to be
+           used as the return value of the parse method.
 
-	   XML::Filter::Digest will walk through the script
-	   object to generate a stream of SAX events for its
-	   Handler. Return value of XML::Filter::Digest is the
-	   return value of the end_document method of the Handler
-	   object.
+           XML::Filter::Digest will walk through the script
+           object to generate a stream of SAX events for its
+           Handler. Return value of XML::Filter::Digest is the
+           return value of the end_document method of the Handler
+           object.
 
        OPTIONS
 
 
        Script
-	   XML::Script::Digest objects can be used for several
-	   XML::Filter::Digest objects.
+           XML::Script::Digest objects can be used for several
+           XML::Filter::Digest objects.
 
        Handler
-	   Default SAX Handler to receive events from
-	   XML::Filter::Digest objects.
+           Default SAX Handler to receive events from
+           XML::Filter::Digest objects.
 
        Source
-	   XML::Filter::Digest and XML::Script can be used on raw
-	   XML directly, by calling the parse() method. To do
-	   this, the Source option is required for embedding the
-	   PerlSAX parser.
+           XML::Filter::Digest and XML::Script can be used on raw
+           XML directly, by calling the parse() method. To do
+           this, the Source option is required for embedding the
+           PerlSAX parser.
 
-	   The `Source' hash may contain the following
-	   parameters:
+           The `Source' hash may contain the following
+           parameters:
 
-	   ByteStream
-	       The raw byte stream (file handle) containing the
-	       document.
+           ByteStream
+               The raw byte stream (file handle) containing the
+               document.
 
-	   String
-	       A string containing the document.
+           String
+               A string containing the document.
 
-	   SystemId
-	       The system identifier (URI) of the document.
+           SystemId
+               The system identifier (URI) of the document.
 
-	   Encoding
-	       A string describing the character encoding.
+           Encoding
+               A string describing the character encoding.
 
-	   If more than one of `ByteStream', `String', or
-	   `SystemId' are present, preference is given first to
-	   `ByteStream', then `String', then `SystemId'.
+           If more than one of `ByteStream', `String', or
+           `SystemId' are present, preference is given first to
+           `ByteStream', then `String', then `SystemId'.
 
 NOTES
        The XML::Filter::Digest is not a streaming filter, but a
@@ -179,7 +181,7 @@ NOTES
        following line in my .bashrc. Other operating systems
        offer similar constraints.
 
-	   ulimit -v 98304 -d 98304 -m 98304
+           ulimit -v 98304 -d 98304 -m 98304
 
        This line is ok on a single user machine with 32M ram and
        128MB swap. I can raise this value, if I know that I wanna
@@ -188,27 +190,52 @@ NOTES
 BUGS
        not yet implemented:
 
-	   reuse of XML::Filter::Digest objects.
+           reuse of XML::Filter::Digest objects.
 
        XML::XPath::Builder bug:
 
-	   XML::Filter::Digest 0.02 has been tested with XML::XPath
-	   version 0.51, but XML::XPath needs the patch included within
-	   this distribution.
-
-	   Version 0.52 is expected to work out of the box.
-
-       other bugs:
-
-	   The NotSoFree License is incompatible with the
-	   GNU General Public License.
+           XML::Filter::Digest 0.02 has been tested with XML::XPath version 1.09,
+           but XML::XPath needs the patch included within this distribution.
+           Version 1.10 is expected to work out of the box. But I said the same
+           about XML::XPath 0.52.
 
 
 AUTHOR
-	 Michael Koehne, Kraehe@Copyleft.De
-	 (c) 2000 NotSoFree License
+         Michael Koehne, Kraehe@Copyleft.De
+         (c) 2001 GNU General Public License
 
 
 SEE ALSO
        the XML::Parser::PerlSAX manpage and the XML::XPath
        manpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,7 +5,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'	=> 'XML::Filter::Digest',
     'VERSION_FROM' => 'Digest.pm', # finds $VERSION
-    'EXE_FILES'    => [ 'digest' ],
+    'EXE_FILES'    => [ 'digest', 'survey' ],
     'PREREQ_PM'    => {
     	'XML::Parser::PerlSAX' => 0.06,
 	'XML::XPath' => 0.51,

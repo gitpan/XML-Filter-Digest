@@ -2,9 +2,8 @@
 # 
 # Copyright (c) 2000 Michael Koehne <kraehe@copyleft.de>
 # 
-# XML::Filter::Digest is not so free software. You can use and redistribute
-# this copy under terms of the NotSoFree-License included within this
-# distribution.
+# XML::Filter::Digest is free software. You can use and redistribute
+# this copy under terms of GNU General Public license.
 
 use strict;
 
@@ -18,9 +17,9 @@ use XML::XPath::Node;
 use XML::XPath::Node::Element;
 use XML::Parser::PerlSAX;
 
-use vars qw($VERSION @ISA $METHODS);
+use vars qw($VERSION @ISA $METHODS $DEBUG);
 
-$VERSION="0.03";
+$VERSION="0.05";
 @ISA = qw( XML::XPath::Builder );
 $METHODS = {
     start_document => 1,
@@ -29,6 +28,7 @@ $METHODS = {
     end_element => 1,
     characters => 1
 };
+$DEBUG = 0;
 
 sub new {
     my $proto = shift;
@@ -67,17 +67,16 @@ sub start_document {
     $self->{'Handler'}->start_document()
         if $self->{'Methods'}{'start_document'};
 
-    $self->{Current} = XML::XPath::Node::Element->new();
-    $self->{Root} = $self->{Current};
+    XML::XPath::Builder::start_document($self);
 }
 
 sub end_document {
     my $self = shift;
     my $result;
 
-    my $xp = XML::XPath->new( context => $self->{Root} );
+    my $xp = XML::XPath->new( context => $self->{DOC_Node} );
     $self->{'xp'} = $xp;
-    $self->recurse( $self->{'Script'}, $self->{Root} );
+    $self->recurse( $self->{'Script'}, $self->{DOC_Node} );
     $self->{'xp'} = undef;
     $xp->cleanup();
 
@@ -89,35 +88,33 @@ sub end_document {
     return $result;
 }
 
-# use Data::Dumper;
-
 sub recurse {
     my ($self,$script,$root) = @_;
 
-# print STDERR "script ".$script->{'name'}."=".$script->{'node'}."\n";
+    print STDERR "script ".$script->{'name'}."=".$script->{'node'}."\n"
+        if $DEBUG;
 
     $self->{'Handler'}->start_element( { 'Name' => $script->{'name'} } )
-	if $self->{'Methods'}{'start_element'};
+	if $self->{'Methods'}{'start_element'} && $script->{'name'};
 
     foreach my $collect (@{$script->{'_'}}) {
-# print STDERR "collect ".$collect->{'name'}."=".$collect->{'node'}."\n";
-# print "collect : ",Dumper($collect),"\n";
-	foreach ($self->{'xp'}->find($collect->{'node'},$root)->get_nodelist) {
+        print STDERR "collect ".$collect->{'name'}."=".$collect->{'node'}."\n"
+            if $DEBUG;
+	foreach ($self->{'xp'}->findnodes($collect->{'node'},$root)) {
 	    if ($#{$collect->{'_'}}>=0) {
 		$self->recurse($collect,$_);
 	    } else {
-# print "node : ",Dumper($_),"\n";
 		$self->{'Handler'}->start_element( { 'Name' => $collect->{'name'} } )
 		    if $self->{'Methods'}{'start_element'};
 
 #		$self->{'Handler'}->characters( { 'Data' => XML::XPath::XMLParser::string_value($_) } )
 #		    if $self->{'Methods'}{'characters'};
 
-# print "node : ",ref($_),"\n";
+                print STDERR "node : ",ref($_),"\n"
+                    if $DEBUG;
 
 		$self->{'Handler'}->characters( { 'Data' => $_->string_value } )
 		    if $self->{'Methods'}{'characters'};
-
 
 		$self->{'Handler'}->end_element( { 'Name' => $collect->{'name'} } )
 		    if $self->{'Methods'}{'end_element'};
@@ -126,7 +123,7 @@ sub recurse {
     }
 
     $self->{'Handler'}->end_element( { 'Name' => $script->{'name'} } )
-	if $self->{'Methods'}{'end_element'};
+	if $self->{'Methods'}{'start_element'} && $script->{'name'};
 }
 
 #------------------------------------------------------------------------------#
@@ -183,7 +180,7 @@ sub start_element {
 	my $node = $element->{Attributes}{'node'};
 
         die "collect element requires node attribute" unless $node;
-        die "collect element requires name attribute" unless $name;
+#       die "collect element requires name attribute" unless $name;
 
 	my $coll = {};
 
@@ -417,21 +414,15 @@ not yet implemented:
 
 XML::XPath::Builder bug:
 
-    XML::Filter::Digest 0.02 has been tested with XML::XPath
-    version 0.51, but XML::XPath needs the patch included within
-    this distribution.
-
-    Version 0.52 is expected to work out of the box.
-
-other bugs:
-
-    The NotSoFree License is incompatible with the
-    GNU General Public License.
+    XML::Filter::Digest 0.02 has been tested with XML::XPath version 1.09,
+    but XML::XPath needs the patch included within this distribution.
+    Version 1.10 is expected to work out of the box. But I said the same
+    about XML::XPath 0.52.
 
 =head1 AUTHOR
 
   Michael Koehne, Kraehe@Copyleft.De
-  (c) 2000 NotSoFree License
+  (c) 2001 GNU General Public License
 
 =head1 SEE ALSO
 
