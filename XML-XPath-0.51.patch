@@ -1,0 +1,57 @@
+*** XML-XPath-0.52/XPath/Builder.pm	Mon May  8 15:08:01 2000
+--- XML-XPath-0.52-new/XPath/Builder.pm	Sat May 27 16:28:10 2000
+***************
+*** 30,37 ****
+  
+  	my $node = XML::XPath::Node::Element->new($tag, '#default');
+  	
+! 	while (@$attribs) {
+! 		my ($key, $val) = (shift @$attribs, shift @$attribs);
+  		my $newattr = XML::XPath::Node::Attribute->new($key, $val);
+  		$node->appendAttribute($newattr);
+  	}
+--- 30,37 ----
+  
+  	my $node = XML::XPath::Node::Element->new($tag, '#default');
+  	
+! 	foreach (keys %$attribs) {
+! 		my ($key, $val) = ($_, $attribs->{$_});
+  		my $newattr = XML::XPath::Node::Attribute->new($key, $val);
+  		$node->appendAttribute($newattr);
+  	}
+***************
+*** 47,53 ****
+  
+  sub characters {
+  	my $self = shift;
+! 	my $characters = shift;
+  	
+  	my @kids = $self->{Current}->getChildNodes;
+  	if (@kids && $kids[-1]->getNodeType == TEXT_NODE) {
+--- 47,54 ----
+  
+  sub characters {
+  	my $self = shift;
+! 	my $args = shift;
+! 	my $characters = $args->{'Data'};
+  	
+  	my @kids = $self->{Current}->getChildNodes;
+  	if (@kids && $kids[-1]->getNodeType == TEXT_NODE) {
+***************
+*** 90,96 ****
+  
+  sub comment {
+  	my $self = shift;
+! 	my $comment = shift;
+  	my $node = XML::XPath::Node::Comment->new($comment);
+  	$self->{Current}->appendChild($node);
+  }
+--- 91,98 ----
+  
+  sub comment {
+  	my $self = shift;
+! 	my $args = shift;
+! 	my $comment = $args->{'Data'};
+  	my $node = XML::XPath::Node::Comment->new($comment);
+  	$self->{Current}->appendChild($node);
+  }

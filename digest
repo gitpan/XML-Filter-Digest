@@ -1,0 +1,64 @@
+#!/usr/bin/perl
+# 
+# Copyright (c) 2000 Michael Koehne <kraehe@copyleft.de>
+# 
+# XML::Filter::Digest is not so free software. You can redistribute
+# and/or modify this copy under terms of the NotSoFree-License included
+# within this distribution.
+
+use strict;
+use XML::Filter::Digest;
+use XML::Handler::YAWriter;
+use IO::File;
+
+my $digest = new XML::Filter::Digest(
+	'Handler'=>
+	    new XML::Handler::YAWriter( 
+		'Output' => new IO::File( ">-" ),
+		'Pretty' => {
+		    'AddHiddenNewLine' => 1
+		    }
+		),
+
+	'Script' =>
+	    new XML::Script::Digest(
+		'Source' => { 'SystemId' => $ARGV[0] }
+		)->parse(),
+
+	'Source' => { 'SystemId' => $ARGV[1] }
+	)->parse();
+
+0;
+__END__
+
+=head1 NAME
+
+digest - command line interface to the Digest SAX Filter
+
+=head1 SYNOPSIS
+
+  digest scriptfile.xml some_original.xml > some_processed.xml
+
+=head1 DESCRIPTION
+
+XML::Filter::Digest is a PerlSAX Filter. The digest script provides
+a shell interface for this tool, that could be used for testing
+Digest scripts or to embed them into other languages.
+
+=head1 OPTIONS
+
+  Currently no options ;-( 
+
+I think that the set of options used in YAWriter are a good start,
+lets look what we additonal need for processing batches.
+
+=head1 AUTHOR
+
+  Michael Koehne, Kraehe@Copyleft.De
+  (c) 2000 NotSoFree-License
+
+=head1 SEE ALSO
+
+L<XML::Parser::PerlSAX> and L<XML::Filter::Digest>
+
+=cut
