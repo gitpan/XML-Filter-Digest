@@ -42,15 +42,15 @@ digest - command line interface to the Digest SAX Filter
 =head1 DESCRIPTION
 
 XML::Filter::Digest is a PerlSAX Filter. The digest script provides
-a shell interface for this tool, that could be used for testing
-Digest scripts or to embed them into other languages.
+a shell interface that could be used with this tool for testing
+Digest scripts or to embed them in other languages.
 
 =head1 OPTIONS
 
-  Currently no options ;-( 
+  Currently no options ;-(
 
-I think that the set of options used in YAWriter are a good start,
-lets look what we additonal need for processing batches.
+I think that the set of options used in YAWriter is a good start,
+let's look what we need in addition for processing batches.
 
 =head1 AUTHOR
 

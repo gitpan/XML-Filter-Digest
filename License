@@ -29,10 +29,6 @@ Blacklist of companies who are not allowed to use XML::Filter::Digest :
 	Arabellastr. 23
 	D-81925 Muenchen
 
-	Harbinger GmbH
-	Steinhaeuserstrasse 22
-	D-76135 Karlsruhe
-
     Contact me privately if you want to know, why I dont distribute this
     module under GPL as usual, but prefer to forbid use within certain
     companies.
