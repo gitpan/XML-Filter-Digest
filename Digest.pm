@@ -19,7 +19,7 @@ use XML::Parser::PerlSAX;
 
 use vars qw($VERSION @ISA $METHODS $DEBUG);
 
-$VERSION="0.05";
+$VERSION="0.06";
 @ISA = qw( XML::XPath::Builder );
 $METHODS = {
     start_document => 1,
@@ -414,10 +414,8 @@ not yet implemented:
 
 XML::XPath::Builder bug:
 
-    XML::Filter::Digest 0.02 has been tested with XML::XPath version 1.09,
-    but XML::XPath needs the patch included within this distribution.
-    Version 1.10 is expected to work out of the box. But I said the same
-    about XML::XPath 0.52.
+    XML::Filter::Digest 0.06 has been tested with XML::XPath version 1.10.
+    Prior versions of XML::XPath::Builder wont work.
 
 =head1 AUTHOR
 

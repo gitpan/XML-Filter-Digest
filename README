@@ -57,15 +57,15 @@ DESCRIPTION
                >
                <collect
                    name="id"
-               node="child::a/attribute::name"
+                   node="child::a/attribute::name"
                />
                <collect
                    name="title"
-               node="."
+                   node="."
                />
                <collect
                    name="intro"
-               node="following-sibling::p[position()=1]"
+                   node="following-sibling::p[position()=1]"
                />
            </collect>
            </digest>
@@ -114,8 +114,6 @@ DESCRIPTION
            pairs or as a single hash.  Options passed to parse()
            override the default options in the object for the
            duration of the parse.
-
-
 
        start_document
            Notifies the object about the start of a new document.
@@ -194,10 +192,8 @@ BUGS
 
        XML::XPath::Builder bug:
 
-           XML::Filter::Digest 0.02 has been tested with XML::XPath version 1.09,
-           but XML::XPath needs the patch included within this distribution.
-           Version 1.10 is expected to work out of the box. But I said the same
-           about XML::XPath 0.52.
+           XML::Filter::Digest 0.06 has been tested with XML::XPath
+           version 1.10. Prior versions of XML::XPath::Builder wont work.
 
 
 AUTHOR
@@ -208,6 +204,17 @@ AUTHOR
 SEE ALSO
        the XML::Parser::PerlSAX manpage and the XML::XPath
        manpage
+
+
+
+2001-06-13                 perl v5.6.0                          1
+
+
+
+
+
+
+
 
 
 
